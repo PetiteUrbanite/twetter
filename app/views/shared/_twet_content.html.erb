@@ -1,0 +1,1 @@
+<%= content_tag :p, twet_content.gsub(/@([A-Za-z0-9_]+)\b/){link_to("@"+$1, user_path($1))}.html_safe %>

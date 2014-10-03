@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   def show
     if params[:username]
       @user = User.where(username: params[:username]).first
-      @twets = @user.twets
+      @twets = @user.twets.order(updated_at: :desc)
       else
       @twets = Twet.all.order(updated_at: :desc)
     end
