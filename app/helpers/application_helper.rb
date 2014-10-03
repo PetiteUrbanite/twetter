@@ -79,4 +79,9 @@ module ApplicationHelper
     html += content_tag :strong, flash[type]
     html.html_safe
   end
+  
+  #Gravatar
+      def gravatar(user)
+        "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email.downcase)}"
+      end
 end
