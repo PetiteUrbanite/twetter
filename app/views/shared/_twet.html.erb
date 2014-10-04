@@ -1,10 +1,27 @@
 <li>
   
-  <%= image_tag(gravatar(twet.user)) %>
-  <%= content_tag :strong, twet.user.name, :class => 'pull-left text-middle' %>
-        <%= content_tag :small, "@"+twet.user.username, :class => 'text-muted pad-10 text-middle' %>
+  <%=  image_tag(gravatar(twet.user), :class => 'pull-left') %> 
+  <%= content_tag :small, twet.original_user && twet.original_user.id != twet.user.id ? "Retweeted by "+twet.user.name : "", :class => 'pull-left text-middle' %>
+  <div class="clearfix"></div>
+  <%= content_tag :strong, twet.original_user && twet.original_user.id != twet.user.id ? twet.original_user.name : twet.user.name, :class => 'pull-left text-middle' %>
+        <%= content_tag :small, "@"+(twet.original_user && twet.original_user.id != twet.user.id ? twet.original_user.username : twet.user.username), :class => 'text-muted pad-10 text-middle' %>
         <%= content_tag :small, twet.created_at.strftime("%b %-d"), :class => 'text-muted text-middle pull-right' %>
         <div class="clearfix"></div>
+  
       <%= render partial: "shared/twet_content", object: twet.content %>
-            </li>
+  
+           <%= form_for (@twet || :twet), :url => twets_path,
+                         :builder => InlineErrorsBuilder,
+                         :method => :POST,
+                         :role => :form do |f| %>
+      <div class="mar-top-15">
+        <%= content_tag :div, :class => f.validation_class(:content, "form-group") do %>
+        <%= f.hidden_field :content, :value => twet.content, :class => 'form-control' %>
+        <%= f.hidden_field :original_user_id, :value => twet.user.id %>
+          <%= f.errors_for :content %>
+        <% end %>
+
+        <%= f.submit "ReTwet" %>
+      </div>
+    <% end %> </li>
       <li><hr></li>

@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
   has_many :follows
   has_many :twets
+  has_many :original_twets, class_name: "Twet", foreign_key: "original_user_id"
 
   validates :name, :presence => true
   validates :username, :presence => true, :uniqueness => true
